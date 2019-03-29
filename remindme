@@ -1,0 +1,30 @@
+#!/usr/bin/env bash                                                                                                               
+
+osascript - "$*" <<END                                                                                                        
+# from ePi272314 at https://stackoverflow.com/a/53618667/197291
+on list2string(theList, theDelimiter)
+
+    -- First, we store in a variable the current delimiter to restore it later
+    set theBackup to AppleScript's text item delimiters
+
+    -- Set the new delimiter
+    set AppleScript's text item delimiters to theDelimiter
+
+    -- Perform the conversion
+    set theString to theList as string
+
+    -- Restore the original delimiter
+    set AppleScript's text item delimiters to theBackup
+
+    return theString
+
+end list2string
+
+on run argv
+    set argList to argv as list
+    set reminderTxt to list2string(argList, " ")                                                                                                                         
+    tell application "Reminders" 
+        make new reminder with properties {name: reminderTxt}                                            
+    end tell                                                                                                                      
+end run                                                                                                                           
+END
